@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Cliente {
+  clid         Int      @id @default(autoincrement())
+  clinombre    String   @db.VarChar(50)
+  clicorreo    String   @db.VarChar(50)
+  clitelefono  String   @db.VarChar(15)
+  clici        String   @db.VarChar(10)
+  
+  pedidos      Pedido[] @relation("ClienteToPedido")
+}
+
+model Pedido {
+  peid         Int      @id @default(autoincrement())
+  pedfecha     DateTime
+  pedtotal     Float
+
+  clid         Int
+  cliente      Cliente  @relation("ClienteToPedido",fields: [clid], references: [clid])
+  producto    Pedido_Producto[] @relation("PedidoToProducto")
+}
+
+model Producto {
+  prdid        Int      @id @default(autoincrement())
+  proid        Int
+  prdnombre    String   @db.VarChar(50)
+  prddescripcion String @db.VarChar(150)
+  prdprecio    Float
+  prdfoto      String   @db.VarChar(255)
+  prdcntnut    String   @db.VarChar(255)
+
+  pedido      Pedido_Producto[] @relation("ProductoToPedido")
+}
+
+model Pedido_Producto {
+  ppcantidad    Int
+
+  peid          Int
+  pedido        Pedido   @relation("PedidoToProducto",fields: [peid], references: [peid])
+
+  prdid         Int
+  producto      Producto @relation("ProductoToPedido",fields: [prdid], references: [prdid])
+
+  @@unique([prdid, peid])
+}
