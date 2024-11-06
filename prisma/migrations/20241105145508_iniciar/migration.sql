@@ -20,9 +20,18 @@ CREATE TABLE `Pedido` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Tipo` (
+    `tipid` INTEGER NOT NULL AUTO_INCREMENT,
+    `tipnombre` VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY (`tipid`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Producto` (
     `prdid` INTEGER NOT NULL AUTO_INCREMENT,
     `proid` INTEGER NOT NULL,
+    `tipid` INTEGER NOT NULL,
     `prdnombre` VARCHAR(50) NOT NULL,
     `prddescripcion` VARCHAR(150) NOT NULL,
     `prdprecio` DOUBLE NOT NULL,
@@ -43,6 +52,9 @@ CREATE TABLE `Pedido_Producto` (
 
 -- AddForeignKey
 ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_clid_fkey` FOREIGN KEY (`clid`) REFERENCES `Cliente`(`clid`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Producto` ADD CONSTRAINT `Producto_tipid_fkey` FOREIGN KEY (`tipid`) REFERENCES `Tipo`(`tipid`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Pedido_Producto` ADD CONSTRAINT `Pedido_Producto_peid_fkey` FOREIGN KEY (`peid`) REFERENCES `Pedido`(`peid`) ON DELETE RESTRICT ON UPDATE CASCADE;

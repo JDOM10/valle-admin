@@ -34,9 +34,17 @@ model Pedido {
   producto    Pedido_Producto[] @relation("PedidoToProducto")
 }
 
+model Tipo {
+tipid         Int     @id @default(autoincrement())
+tipnombre     String  @db.VarChar(50)
+
+producto Producto[] @relation("TipoToProducto")
+}
+
 model Producto {
   prdid        Int      @id @default(autoincrement())
   proid        Int
+  tipid        Int
   prdnombre    String   @db.VarChar(50)
   prddescripcion String @db.VarChar(150)
   prdprecio    Float
@@ -44,6 +52,7 @@ model Producto {
   prdcntnut    String   @db.VarChar(255)
 
   pedido      Pedido_Producto[] @relation("ProductoToPedido")
+  tipo        Tipo @relation("TipoToProducto", fields: [tipid], references: [tipid])
 }
 
 model Pedido_Producto {
