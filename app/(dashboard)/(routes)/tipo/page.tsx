@@ -9,7 +9,7 @@ const TipoPage = async () => {
 
   const formattedTipo: TipoColumn[] = tipo.map((item) => ({   
     tipid: item.tipid, 
-    tipdesc: item.tipdesc, 
+    tipnombre: item.tipnombre, 
   }));
 
   return (

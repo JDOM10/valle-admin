@@ -41,10 +41,17 @@ tipnombre     String  @db.VarChar(50)
 producto Producto[] @relation("TipoToProducto")
 }
 
+model Productor {
+  proid            Int   @id @default(autoincrement())
+  pronombre        String  @db.VarChar(50)
+  prodescripcion   String @db.VarChar(250)
+  profoto          String @db.VarChar(255)
+
+  producto Producto[] @relation("ProductorToProducto")
+}
+
 model Producto {
   prdid        Int      @id @default(autoincrement())
-  proid        Int
-  tipid        Int
   prdnombre    String   @db.VarChar(50)
   prddescripcion String @db.VarChar(150)
   prdprecio    Float
@@ -52,7 +59,12 @@ model Producto {
   prdcntnut    String   @db.VarChar(255)
 
   pedido      Pedido_Producto[] @relation("ProductoToPedido")
+
+  tipid        Int
   tipo        Tipo @relation("TipoToProducto", fields: [tipid], references: [tipid])
+
+  proid        Int 
+  productor   Productor @relation("ProductorToProducto", fields: [proid], references: [proid])
 }
 
 model Pedido_Producto {
