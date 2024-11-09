@@ -14,19 +14,19 @@ export function MainNav({
 
   const routes = [
     {
-      href: `/${params.storeId}`,
-      label: 'Overview',
-      active: pathname === `/${params.storeId}`,
+      href: `/tipo`,
+      label: 'Tipo de Producto',
+      active: pathname === `/tipo`,
     },
     {
-      href: `/${params.storeId}/billboards`,
-      label: 'Billboards',
-      active: pathname === `/${params.storeId}/billboards`,
+      href: `/producto`,
+      label: 'Productos',
+      active: pathname === `/producto`,
     },
     {
-      href: `/${params.storeId}/categories`,
-      label: 'Categories',
-      active: pathname === `/${params.storeId}/categories`,
+      href: `/productor`,
+      label: 'Productores',
+      active: pathname === `/productor`,
     },
     {
       href: `/${params.storeId}/sizes`,
