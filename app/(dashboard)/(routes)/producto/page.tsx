@@ -12,12 +12,11 @@ const ProductoPage = async () => {
     prdid: item.prdid,
     prdnombre: item.prdnombre,
     prdprecio: item.prdprecio,
-    proid: item.productor.pronombre,
-    tipid: item.tipo.tipnombre,
+    proid: item.productor ? item.productor.pronombre : "Sin productor",
+    tipid: item.tipo ? item.tipo.tipnombre : "Sin tipo",
     prddescripcion: item.prddescripcion,
     prdfoto: item.prdfoto,
     prdcntnut: item.prdcntnut,
-
   }));
 
   return (

@@ -1,17 +1,15 @@
 import prismadb from "@/lib/prismadb";
-
 import { ProductorColumn } from "./components/columns";
 import { ProductorClient } from "./components/client";
 
 const ProductorPage = async () => {
-  const productor = await prismadb.productor.findMany({
-  });
+  const productor = await prismadb.productor.findMany();
 
-  const formattedProductor: ProductorColumn[] = productor.map((item) => ({   
+  const formattedProductor: ProductorColumn[] = productor.map((item) => ({
     proid: item.proid,
     pronombre: item.pronombre,
     prodescripcion: item.prodescripcion,
-    profoto: item.profoto,
+    profoto: item.profoto || "/default-image.jpg", // Valor predeterminado si no hay foto
   }));
 
   return (

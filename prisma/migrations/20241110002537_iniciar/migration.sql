@@ -28,15 +28,25 @@ CREATE TABLE `Tipo` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Productor` (
+    `proid` INTEGER NOT NULL AUTO_INCREMENT,
+    `pronombre` VARCHAR(50) NOT NULL,
+    `prodescripcion` VARCHAR(250) NOT NULL,
+    `profoto` VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (`proid`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Producto` (
     `prdid` INTEGER NOT NULL AUTO_INCREMENT,
-    `proid` INTEGER NOT NULL,
-    `tipid` INTEGER NOT NULL,
     `prdnombre` VARCHAR(50) NOT NULL,
     `prddescripcion` VARCHAR(150) NOT NULL,
     `prdprecio` DOUBLE NOT NULL,
     `prdfoto` VARCHAR(255) NOT NULL,
     `prdcntnut` VARCHAR(255) NOT NULL,
+    `tipid` INTEGER NOT NULL,
+    `proid` INTEGER NOT NULL,
 
     PRIMARY KEY (`prdid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -55,6 +65,9 @@ ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_clid_fkey` FOREIGN KEY (`clid`) REFE
 
 -- AddForeignKey
 ALTER TABLE `Producto` ADD CONSTRAINT `Producto_tipid_fkey` FOREIGN KEY (`tipid`) REFERENCES `Tipo`(`tipid`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Producto` ADD CONSTRAINT `Producto_proid_fkey` FOREIGN KEY (`proid`) REFERENCES `Productor`(`proid`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Pedido_Producto` ADD CONSTRAINT `Pedido_Producto_peid_fkey` FOREIGN KEY (`peid`) REFERENCES `Pedido`(`peid`) ON DELETE RESTRICT ON UPDATE CASCADE;
