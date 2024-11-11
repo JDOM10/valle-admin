@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -9,7 +9,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -18,13 +18,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[],
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
   searchKeys: string[];
 }
 
@@ -39,6 +39,14 @@ export function DataTable<TData, TValue>({
   const searchKeyAliases: { [key: string]: string } = {
     pronombre: "Productor",
     tipnombre: "Descripción",
+    prdnombre: "Producto", // Agrega un alias para cada clave en searchKeys
+    prddescripcion: "Descripción",
+    proid: "Productor",
+    clinombre: "Cliente",
+    "productos.prdnombre": "Producto",
+    clicorreo: "Correo",
+
+    // Agrega más alias aquí según los campos en searchKeys
   };
 
   const table = useReactTable({
@@ -50,7 +58,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
-    }
+    },
   });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +72,7 @@ export function DataTable<TData, TValue>({
     setCurrentSearchKey(newSearchKey);
     table.getColumn(newSearchKey)?.setFilterValue("");
   };
-  
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -77,14 +85,14 @@ export function DataTable<TData, TValue>({
         >
           {searchKeys.map((key) => (
             <option key={key} value={key}>
-              {searchKeyAliases[key]}
+              {searchKeyAliases[key] || key} {/* Usa el alias o muestra la clave */}
             </option>
           ))}
         </select>
       </div>
       <div>
         <Input
-          placeholder={`Buscar por ${searchKeyAliases[currentSearchKey]}`}
+          placeholder={`Buscar por ${searchKeyAliases[currentSearchKey] || currentSearchKey}`}
           value={(table.getColumn(currentSearchKey)?.getFilterValue() as string) ?? ""}
           onChange={handleSearchChange}
           className="max-w-sm"
@@ -96,18 +104,16 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="h-7">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="h-7">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -154,5 +160,5 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
     </div>
-  )
+  );
 }

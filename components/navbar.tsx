@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MainNav } from "./main-nav";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/button";
+import { UserButton } from "@clerk/nextjs"
 
 const Navbar = () => {
   const [isMenuFixed, setIsMenuFixed] = useState(false);
@@ -25,8 +26,9 @@ const Navbar = () => {
   return (
     <div className={`border-b ${isMenuFixed ? 'fixed top-0 left-0 right-0 bg-white z-10' : ''}`}>
       <div className="flex h-16 items-center px-4">
-        <MainNav className="mx-6" />
-        <Button className="ml-6" onClick={() => {router.push("/sign-out");}}>
+      <UserButton/>  
+        <MainNav className="mx-6" /> 
+        <Button className="ml-6" onClick={() => {router.push("/sign-in");}}>
           <LogOut className="logouticon" />
         </Button>
       </div>
