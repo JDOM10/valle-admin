@@ -4,6 +4,16 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { CellAction } from "./cell-action";
 
+// Función para verificar si una cadena es una URL válida
+function isValidUrl(url: string) {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export type ProductoColumn = {
   prdid: number;
   prdnombre: string;
@@ -12,7 +22,7 @@ export type ProductoColumn = {
   tipid: string;
   prddescripcion: string;
   prdfoto: string; // URL de la imagen de la foto
-  prdcntnut: string; // URL del contenido nutricional como imagen
+  prdcntnut: string; // Contenido nutricional, podría ser texto o URL de imagen
 };
 
 export const columns: ColumnDef<ProductoColumn>[] = [
@@ -33,7 +43,7 @@ export const columns: ColumnDef<ProductoColumn>[] = [
     header: "Foto",
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        {row.original.prdfoto ? (
+        {isValidUrl(row.original.prdfoto) ? (
           <Image
             src={row.original.prdfoto}
             alt={`Foto de ${row.original.prdnombre}`}
@@ -52,7 +62,7 @@ export const columns: ColumnDef<ProductoColumn>[] = [
     header: "Contenido Nutricional",
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        {row.original.prdcntnut ? (
+        {isValidUrl(row.original.prdcntnut) ? (
           <Image
             src={row.original.prdcntnut}
             alt={`Contenido nutricional de ${row.original.prdnombre}`}
@@ -61,7 +71,7 @@ export const columns: ColumnDef<ProductoColumn>[] = [
             className="rounded-md"
           />
         ) : (
-          <span>No disponible</span>
+          <span>{row.original.prdcntnut || "No disponible"}</span>
         )}
       </div>
     ),
@@ -76,7 +86,7 @@ export const columns: ColumnDef<ProductoColumn>[] = [
   },
   {
     accessorKey: "proid",
-    header: "Producto",
+    header: "Productor",
   },
   {
     id: "acciones",
