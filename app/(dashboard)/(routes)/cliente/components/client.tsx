@@ -9,6 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 import { columns, ClienteColumn } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface ClienteClientProps {
   data: ClienteColumn[];
@@ -27,7 +28,11 @@ export const ClienteClient: React.FC<ClienteClientProps> = ({ data }) => {
         <ArrowBigLeft className="mr-2 h-6 w-6" />
         Regresar
       </Button>
+      <Separator />
       <DataTable searchKeys={["clinombre", "clicorreo"]} columns={columns} data={data} />
+      <Heading title="API" description="API Calls para Clientes" />
+      <Separator />
+      <ApiList entityName="pedido" entityIdName="pedidoId" />
     </>
   );
 };

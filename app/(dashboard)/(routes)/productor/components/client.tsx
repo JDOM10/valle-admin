@@ -7,6 +7,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { columns, ProductorColumn } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface ProductorClientProps {
   data: ProductorColumn[];
@@ -29,7 +30,11 @@ export const ProductorClient: React.FC<ProductorClientProps> = ({ data }) => {
         <ArrowBigLeft className="mr-2 h-6 w-6" />
         Regresar
       </Button>
+      <Separator />
       <DataTable searchKeys={["pronombre"]} columns={columns} data={data} />
+      <Heading title="API" description="API Calls para Productores" />
+      <Separator />
+      <ApiList entityName="productor" entityIdName="productorId" />
     </>
   );
 };

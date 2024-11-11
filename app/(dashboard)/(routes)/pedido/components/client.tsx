@@ -9,6 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 import { columns, PedidoColumn } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface PedidoClientProps {
   data: PedidoColumn[];
@@ -27,7 +28,11 @@ export const PedidoClient: React.FC<PedidoClientProps> = ({ data }) => {
         <ArrowBigLeft className="mr-2 h-6 w-6" />
         Regresar
       </Button>
+      <Separator />
       <DataTable searchKeys={["clinombre", "productos.prdnombre"]} columns={columns} data={data} />
+      <Heading title="API" description="API Calls para Pedidos" />
+      <Separator />
+      <ApiList entityName="pedido" entityIdName="pedidoId" />
     </>
   );
 };

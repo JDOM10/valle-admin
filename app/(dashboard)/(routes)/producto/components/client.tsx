@@ -9,6 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 import { columns, ProductoColumn } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface ProductoClientProps {
   data: ProductoColumn[];
@@ -31,7 +32,11 @@ export const ProductoClient: React.FC<ProductoClientProps> = ({ data }) => {
         <ArrowBigLeft className="mr-2 h-6 w-6" />
         Regresar
       </Button>
+      <Separator />
       <DataTable searchKeys={["prdnombre", "prddescripcion", "proid"]} columns={columns} data={data} />
+      <Heading title="API" description="API Calls para Productos" />
+      <Separator />
+      <ApiList entityName="producto" entityIdName="productoId" />
     </>
   );
 };
