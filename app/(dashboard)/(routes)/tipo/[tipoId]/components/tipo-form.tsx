@@ -115,13 +115,13 @@ export const TipoForm: React.FC<TipoFormProps> = ({ initialData }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
+          className="sm:w-full md:w-2/3 space-y-6"
         >
           <FormField
             control={form.control}
             name="tipnombre"
             render={({ field }) => (
-              <FormItem className="w-1/3">
+              <FormItem className="sm:w-full md:w-1/3">
                 <FormLabel>Descripción*</FormLabel>
                 <FormControl>
                   <Input

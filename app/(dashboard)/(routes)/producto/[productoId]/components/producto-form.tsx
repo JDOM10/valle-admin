@@ -23,21 +23,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
-
-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
-    prdnombre: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
-    prddescripcion: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
-    prdfoto: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
-    prdprecio: z.coerce
-    .number()
-    .min(1, { message: "Debe ser un número." })
-    .int({ message: "Debe ingresar un número entero." }),
-    proid: z.optional(z.number()),
-    tipid: z.optional(z.number()),
-    prdcntnut: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),  
+  prdnombre: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
+  prddescripcion: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
+  prdfoto: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
+  prdprecio: z.coerce.number().min(0.01, { message: "Debe ser un número positivo." }),
+  proid: z.optional(z.number()),
+  tipid: z.optional(z.number()),
+  prdcntnut: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
 });
 
 type ProductoFormValues = z.infer<typeof formSchema>;
@@ -48,7 +43,7 @@ interface ProductoFormProps {
   tipos: Tipo[];
 }
 
-export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, productores}) => {
+export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, productores }) => {
   const params = useParams();
   const router = useRouter();
 
@@ -67,11 +62,11 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
       prddescripcion: "",
       prdcntnut: "",
       prdfoto: "",
-      prdprecio: -1,
+      prdprecio: 0,
       proid: 0,
       tipid: 0,
     },
-  })
+  });
 
   const onSubmit = async (data: ProductoFormValues) => {
     try {
@@ -83,7 +78,6 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
       }
       router.refresh();
       router.push(`/../producto`);
-      router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Algo estuvo mal.");
@@ -98,12 +92,9 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
       await axios.delete(`/api/producto/${params.productoId}`);
       router.refresh();
       router.push(`/../producto`);
-      router.refresh();
       toast.success("Producto borrado");
     } catch (error: any) {
-      toast.error(
-        "Asegurate de haber borrado todas los productos asociados a este producto."
-      );
+      toast.error("Asegúrate de haber eliminado todos los productos asociados.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -133,104 +124,83 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
       </div>
       <Separator />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
-        <div className="flex">
-          <FormField
-                  control={form.control}
-                  name="prdnombre"
-                  render={({ field }) => (
-                    <FormItem className="w-1/4">
-                      <FormLabel>Nombre</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ----" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
-              <FormField
-                  control={form.control}
-                  name="prddescripcion"
-                  render={({ field }) => (
-                    <FormItem className="w-2/3 ml-20">
-                      <FormLabel>Descripción</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ------" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
-            </div>
-            <div className="flex">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="sm:w-full md:w-2/3 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="prdprecio"
+              name="prdnombre"
               render={({ field }) => (
-                <FormItem className="w-16 mx-20">
-                  <FormLabel>Stock*</FormLabel>
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Stock"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="Ej: Collar" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-              <FormField
-                  control={form.control}
-                  name="prdfoto"
-                  render={({ field }) => (
-                    <FormItem className="w-2/3 ml-20">
-                      <FormLabel>Foto</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ------" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
-            </div>
-            <div className="flex">
-          <FormField
-                  control={form.control}
-                  name="prdcntnut"
-                  render={({ field }) => (
-                    <FormItem className="w-1/4">
-                      <FormLabel>Cnt nut</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ----" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
+            <FormField
+              control={form.control}
+              name="prddescripcion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Ej: Collar de oro" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="prdfoto"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Foto</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Ej: https://i.pinimg.com/imagen.jpg" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="prdcntnut"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cnt nut</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Ej: https://i.pinimg.com/imagen.jpg" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="md:w-1/2">
+            <div className="grid grid-cols-1  md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="proid"
                 render={({ field }) => (
-                  <FormItem className="w-1/5 mx-8">
-                    <FormLabel>Productor*</FormLabel>
+                  <FormItem>
+                    <FormLabel>Productor</FormLabel>
                     <Select
                       disabled={loading}
-                      onValueChange={(selectedValue) => {
-                        field.onChange(parseInt(selectedValue, 10));
-                      }}
-                      value={initialData ? String(field.value) : undefined}
+                      onValueChange={(selectedValue) => field.onChange(parseInt(selectedValue, 10))}
+                      value={String(field.value)}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue defaultValue={field.value} placeholder="Selecciona un Productor:" />
+                          <SelectValue placeholder="Selecciona un Productor" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="h-[170px]">
+                      <SelectContent>
                         {productores.map((productor) => (
                           <SelectItem key={productor.proid} value={String(productor.proid)}>
                             {productor.pronombre}
@@ -240,29 +210,25 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
                     </Select>
                     <FormMessage />
                   </FormItem>
-                )}  
-            />
-            </div>
-            <div className="flex">
-            <FormField
+                )}
+              />
+              <FormField
                 control={form.control}
                 name="tipid"
                 render={({ field }) => (
-                  <FormItem className="w-1/5 mx-8">
-                    <FormLabel>Tipo*</FormLabel>
+                  <FormItem>
+                    <FormLabel>Tipo</FormLabel>
                     <Select
                       disabled={loading}
-                      onValueChange={(selectedValue) => {
-                        field.onChange(parseInt(selectedValue, 10));
-                      }}
-                      value={initialData ? String(field.value) : undefined}
+                      onValueChange={(selectedValue) => field.onChange(parseInt(selectedValue, 10))}
+                      value={String(field.value)}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue defaultValue={field.value} placeholder="Selecciona un Tipo:" />
+                          <SelectValue placeholder="Selecciona un Tipo" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="h-[170px]">
+                      <SelectContent>
                         {tipos.map((tipo) => (
                           <SelectItem key={tipo.tipid} value={String(tipo.tipid)}>
                             {tipo.tipnombre}
@@ -272,20 +238,42 @@ export const ProductoForm: React.FC<ProductoFormProps> = ({ initialData, tipos, 
                     </Select>
                     <FormMessage />
                   </FormItem>
-                )}  
-            />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="prdprecio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Precio</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        disabled={loading}
+                        placeholder="Ej: 99.99"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-                     
-          <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
-          </Button>
-          <Button
-            className="ml-5"
-            onClick={() => router.push(`../producto`)}
-            type="reset"
-          >
-            Cancelar
-          </Button>
+          </div>
+
+          <div className="flex space-x-4">
+            <Button disabled={loading} type="submit">
+              {action}
+            </Button>
+            <Button
+              onClick={() => router.push(`../producto`)}
+              type="button"
+              variant="outline"
+            >
+              Cancelar
+            </Button>
+          </div>
         </form>
       </Form>
     </>

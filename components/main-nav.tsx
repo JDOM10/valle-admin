@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link"
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export function MainNav({
   className,
@@ -14,34 +13,38 @@ export function MainNav({
   const routes = [
     {
       href: `/tipo`,
-      label: 'Tipo de Producto',
+      label: "Tipo de Producto",
       active: pathname === `/tipo`,
     },
     {
       href: `/producto`,
-      label: 'Productos',
+      label: "Productos",
       active: pathname === `/producto`,
     },
     {
       href: `/productor`,
-      label: 'Productores',
+      label: "Productores",
       active: pathname === `/productor`,
     },
     {
       href: `/pedido`,
-      label: 'Pedidos',
+      label: "Pedidos",
       active: pathname === `/pedido`,
     },
     {
       href: `/cliente`,
-      label: 'Clientes',
+      label: "Clientes",
       active: pathname === `/cliente`,
     },
-  ]
+  ];
 
   return (
     <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+      className={cn(
+        "flex items-center space-x-4 lg:space-x-6",
+        "text-gray-700 dark:text-gray-300", // Color por defecto
+        className
+      )}
       {...props}
     >
       {routes.map((route) => (
@@ -49,13 +52,15 @@ export function MainNav({
           key={route.href}
           href={route.href}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
+            "text-sm font-medium transition-colors hover:text-blue-500",
+            route.active
+              ? "text-blue-600 dark:text-blue-400 font-semibold" // Color activo
+              : "text-gray-500"
           )}
         >
           {route.label}
-      </Link>
+        </Link>
       ))}
     </nav>
-  )
-};
+  );
+}

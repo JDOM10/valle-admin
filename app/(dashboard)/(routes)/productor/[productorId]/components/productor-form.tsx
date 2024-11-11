@@ -129,7 +129,7 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
                     <FormItem className="w-1/4">
                       <FormLabel>Nombre</FormLabel>
                       <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ----" {...field} />
+                        <Input disabled={loading} placeholder="Ej: Juan" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -142,7 +142,7 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
                     <FormItem className="w-2/3 ml-20">
                       <FormLabel>Descripción</FormLabel>
                       <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ------" {...field} />
+                        <Input disabled={loading} placeholder="Ej: Montenegro" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -156,7 +156,7 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
                     <FormItem className="w-1/3">
                       <FormLabel>Foto</FormLabel>
                       <FormControl>
-                        <Input disabled={loading} placeholder="Ej: ----" {...field} />
+                        <Input disabled={loading} placeholder="Ej: https://i.pinimg.com/imagen.jpg" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

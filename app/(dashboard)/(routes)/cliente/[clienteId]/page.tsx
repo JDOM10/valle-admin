@@ -1,5 +1,4 @@
 import prismadb from "@/lib/prismadb";
-import { ClienteForm } from "@/app/(dashboard)/(routes)/cliente/[clienteId]/components/cliente-form";
 
 const ClientePageView = async ({
   params,
@@ -20,19 +19,9 @@ const ClientePageView = async ({
     return <div>Cliente no encontrado</div>;
   }
 
-  // Preparar los datos para `ClienteForm`, incluyendo `clid`
-  const clienteData = {
-    clid: cliente.clid, // Asegurarse de incluir `clid`
-    clinombre: cliente.clinombre,
-    clicorreo: cliente.clicorreo,
-    clitelefono: cliente.clitelefono,
-    clici: cliente.clici,
-  };
-
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <ClienteForm initialData={clienteData} />
       </div>
     </div>
   );
