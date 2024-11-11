@@ -9,6 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 import { columns, TipoColumn } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface TipoClientProps {
   data: TipoColumn[];
@@ -31,7 +32,11 @@ export const TipoClient: React.FC<TipoClientProps> = ({ data }) => {
         <ArrowBigLeft className="mr-2 h-6 w-6" />
         Regresar
       </Button>
+      <Separator />
       <DataTable searchKeys={["tipnombre"]} columns={columns} data={data} />
+      <Heading title="API" description="API Calls para Tipos de Productos" />
+      <Separator />
+      <ApiList entityName="tipo" entityIdName="tipoId" />
     </>
   );
 };
