@@ -26,8 +26,8 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 const formSchema = z.object({
   pronombre: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
-    prodescripcion: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
-    profoto: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
+  prodescripcion: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
+  profoto: z.string().min(1, { message: "Debe ingresar al menos 1 caracter." }),
 });
 
 type ProductorFormValues = z.infer<typeof formSchema>;
@@ -67,7 +67,6 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
       }
       router.refresh();
       router.push(`/../productor`);
-      router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Algo estuvo mal.");
@@ -82,12 +81,9 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
       await axios.delete(`/api/productor/${params.productorId}`);
       router.refresh();
       router.push(`/../productor`);
-      router.refresh();
       toast.success("Productor borrado");
     } catch (error: any) {
-      toast.error(
-        "Asegurate de haber borrado todas los productos asociados a este productor."
-      );
+      toast.error("Asegurate de haber borrado todos los productos asociados a este productor.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -117,61 +113,60 @@ export const ProductorForm: React.FC<ProductorFormProps> = ({ initialData }) => 
       </div>
       <Separator />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
-        <div className="flex">
-          <FormField
-                  control={form.control}
-                  name="pronombre"
-                  render={({ field }) => (
-                    <FormItem className="w-1/4">
-                      <FormLabel>Nombre</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: Juan" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
-              <FormField
-                  control={form.control}
-                  name="prodescripcion"
-                  render={({ field }) => (
-                    <FormItem className="w-2/3 ml-20">
-                      <FormLabel>Descripción</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: Montenegro" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />
-            </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="sm:w-full md:w-2/3 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
-                  control={form.control}
-                  name="profoto"
-                  render={({ field }) => (
-                    <FormItem className="w-1/3">
-                      <FormLabel>Foto</FormLabel>
-                      <FormControl>
-                        <Input disabled={loading} placeholder="Ej: https://i.pinimg.com/imagen.jpg" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-              />          
-          <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
-          </Button>
-          <Button
-            className="ml-5"
-            onClick={() => router.push(`../productor`)}
-            type="reset"
-          >
-            Cancelar
-          </Button>
+              control={form.control}
+              name="pronombre"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Ej: Juan" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="prodescripcion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Ej: Montenegro" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="profoto"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Foto</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} placeholder="Ej: https://i.pinimg.com/imagen.jpg" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex space-x-4">
+            <Button disabled={loading} type="submit">
+              {action}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => router.push(`../productor`)}
+              type="button"
+            >
+              Cancelar
+            </Button>
+          </div>
         </form>
       </Form>
     </>
