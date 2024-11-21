@@ -7,8 +7,17 @@ export async function POST(req: Request) {
 
     const { pedfecha, pedtotal, clid, productos } = body;
 
-    if (!pedfecha || !pedtotal || !clid) {
-      return new NextResponse("Fecha, total y cliente son requeridos", { status: 400 });
+    // Validar campos requeridos
+    if (!pedfecha || !pedtotal || !clid || !productos || !Array.isArray(productos)) {
+      return new NextResponse("Fecha, total, cliente y productos son requeridos", { status: 400 });
+    }
+
+    // Validar que los productos tengan estructura válida
+    const invalidProduct = productos.some(
+      (prod: { prdid: number; cantidad: number }) => !prod.prdid || !prod.cantidad
+    );
+    if (invalidProduct) {
+      return new NextResponse("Cada producto debe incluir 'prdid' y 'cantidad'", { status: 400 });
     }
 
     // Crear el pedido con los productos asociados
@@ -20,20 +29,28 @@ export async function POST(req: Request) {
           connect: { clid }, // Conectar el pedido con el cliente usando `clid`
         },
         producto: {
-          create: productos.map((prod: { productoId: number; cantidad: number }) => ({
+          create: productos.map((prod: { prdid: number; cantidad: number }) => ({
             producto: {
-              connect: { prdid: prod.productoId }, // Conectar cada producto al pedido usando `productoId`
+              connect: { prdid: prod.prdid }, // Conectar cada producto al pedido usando `prdid`
             },
             ppcantidad: prod.cantidad,
           })),
+        },
+      },
+      include: {
+        cliente: true,
+        producto: {
+          include: {
+            producto: true,
+          },
         },
       },
     });
 
     return NextResponse.json(pedido);
   } catch (error) {
-    console.log('[PEDIDO_POST]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error('[PEDIDO_POST]', error);
+    return new NextResponse("Error interno al crear el pedido", { status: 500 });
   }
 }
 
@@ -69,7 +86,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(formattedPedidos);
   } catch (error) {
-    console.log('[PEDIDO_GET]', error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error('[PEDIDO_GET]', error);
+    return new NextResponse("Error interno al obtener los pedidos", { status: 500 });
   }
 }
