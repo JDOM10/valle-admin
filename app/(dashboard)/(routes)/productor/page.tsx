@@ -9,7 +9,7 @@ const ProductorPage = async () => {
     proid: item.proid,
     pronombre: item.pronombre,
     prodescripcion: item.prodescripcion,
-    profoto: item.profoto || "/default-image.jpg", // Valor predeterminado si no hay foto
+    profoto: item.profoto, // Valor predeterminado si no hay foto
   }));
 
   return (
